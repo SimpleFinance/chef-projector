@@ -26,6 +26,10 @@ class Chef
         @url = nil
         @repository = nil
 
+        # XXX
+        @sqs_name = defaults['sqs']['name']
+        @sqs_user = defaults['sqs']['user']
+
         @job_name = "#{name}-#{@target}"
       end
 
