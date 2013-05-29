@@ -1,0 +1,61 @@
+* =projector=
+
+=projector= manages the code repositories and build tasks that get your code into production.
+
+** Data
+
+=projector= pipelines are defined in simple maps. The following keys are supported:
+
+| key         | type   | default    | description                      |
+|-------------+--------+------------+----------------------------------|
+| name        | string | *none*     | name of the project              |
+| description | string | *optional* | short description of the project |
+| code        | hash   | *none*     | code repository configuration    |
+| build       | hash   | *none*     | build configuration              |
+
+*** =code=
+
+| key      | type   | default                   | description              |
+|----------+--------+---------------------------+--------------------------|
+| provider | string | github                    | code repository provider |
+| api      | URL    | https://api.github.com/v3 | API URL                  |
+| org      | string | *none*                    | repository organization  |
+| user     | string | *none*                    | repository owner         |
+| hooks    | hash   | *optional*                |                          |
+
+Either =org= or =user= must be specified, but not both.
+
+*** =build=
+
+| key | type | default | description |
+|-----+------+---------+-------------|
+|     |      |         |             |
+
+** Resources
+
+*** =projector_pipeline=
+
+A pipeline is the path your code follows from =git commit= to production.
+
+*** =projector_repository=
+
+A repository stores and versions your code. =projector= manages the repository and configures hooks to trigger builds when your code changes.
+
+*** =projector_job=
+
+A job builds or deploys your code. Jobs are organized in a pipeline, where artifacts are promoted from one phase to the next. In each phase, the phase name (=target=) is passed to an executable when your job is run.
+
+| attribute   | type   | default                   |
+|-------------+--------+---------------------------|
+| description | string | -                         |
+| command     | string | 'make'                    |
+| target      | string | 'build'                   |
+| owner       | string | 'projector'               |
+| group       | string | 'projector'               |
+| template    | string | 'config.xml.erb'          |
+| variables   | Hash   | -                         |
+| cookbook    | string | *caller*                  |
+| url         | string | =node.jenkins.server.url= |
+| repository  | string | -                         |
+| branch      | string | 'master'                  |
+
