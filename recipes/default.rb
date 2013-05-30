@@ -8,7 +8,6 @@ data_bag(node['projector']['databag']).each do |item|
     action :create
     org item['org']
     description item['description']
-    queue 'XXX'
     # XXX: irc, etc
     # hooks
   end

@@ -2,16 +2,33 @@
 
 =projector= manages the code repositories and build tasks that get your code into production.
 
+** Recipes
+
+*** =projector::pipeline=
+
+The =pipeline= recipe iterates through items in a databag and constructs a pipeline to build and deploy a software project. The pipeline includes one =projector_repository= resource and one or more =projector_job= resources. The repository is configured to send to a queue when new code is pushed. The first job listens on the queue and triggers a build for each push. Any other jobs in the pipeline are triggered automatically as each preceding job completes successfully.
+
+** Resources
+
+*** =projector_repository=
+
+| attribute | type   | description         |
+|-----------+--------+---------------------|
+| org       | string | Github organization |
+|           |        |                     |
+
 ** Data
 
-=projector= pipelines are defined in simple maps. The following keys are supported:
+=projector= projects are defined in simple maps. The following keys are supported:
 
-| key         | type   | default    | description                      |
-|-------------+--------+------------+----------------------------------|
-| name        | string | *none*     | name of the project              |
-| description | string | *optional* | short description of the project |
-| code        | hash   | *none*     | code repository configuration    |
-| build       | hash   | *none*     | build configuration              |
+| key         | type     | default    | description                                         |
+|-------------+----------+------------+-----------------------------------------------------|
+| id          | string   | *none*     | name of the project                                 |
+| description | string   | *optional* | short description of the project                    |
+| org         | string   | *none*     | Github organzation that owns the project repository |
+| targets     | [string] | ['build']  | Jenkins pipeline phases                             |
+| command     | string   | 'make'     | Jenkins job command                                 |
+
 
 *** =code=
 
