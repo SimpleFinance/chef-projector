@@ -15,14 +15,14 @@ class Chef
 
       def load_current_resource
         @current_resource = Chef::Resource::ProjectorRepository.new(@new_resource.name)
-        repo = @client.repository(@new_resource.repo)
+        repo = client.repository(@new_resource.repo)
         @current_resource.exists(repo ? true : false)
         if repo
           @current_resource.repo(repo.slug)
           @current_resource.org(repo.username)
           @current_resource.description(repo.description)
           hooks = {}
-          @client.hooks.each do |hook|
+          client.hooks.each do |hook|
             hooks[hook.delete('name')] = hook
           end
           @current_resource.hooks(hooks)
@@ -33,13 +33,13 @@ class Chef
 
       def action_create
         if !@current_resource.exists
-          @client.create_repository(@new_resource.name,
+          client.create_repository(@new_resource.name,
                                     :organization => @new_resource.org,
                                     :description => @new_resource.description
                                     )
 
           hooks.each_pair do |service, config|
-            @client.create_hook(@new_resource.repo, service, config)
+            client.create_hook(@new_resource.repo, service, config)
           end
         end
         @new_resource.updated_by_last_action(true)
@@ -63,7 +63,7 @@ class Chef
 
         if !options.empty?
           # Use current_resource.repo here in case the name changes.
-          @client.edit_repository(@current_resource.repo, options)
+          client.edit_repository(@current_resource.repo, options)
           updated = true
         end
 
@@ -72,12 +72,12 @@ class Chef
         @current_resource.hooks.each_pair do |service, hook|
           config = hooks[service]
           if config.nil?
-            @client.remove_hook(@new_resource.repo, hook['id'])
+            client.remove_hook(@new_resource.repo, hook['id'])
             updated_hooks.push(service)
           else
             diff = config.select{|k,v| (v, nil).include?(hook[k])}
             if !diff.empty?
-              @client.edit_hook(@new_resource.repo, id, service, config)
+              client.edit_hook(@new_resource.repo, id, service, config)
               updated_hooks.push(service)
             end
           end
@@ -85,7 +85,7 @@ class Chef
         
         hooks.each_pair do |service, config|
           next if updated_hooks.include?(service)
-          @client.create_hook(@new_resource.repo, service, config)
+          client.create_hook(@new_resource.repo, service, config)
           updated_hooks.push(service)
         end
 
@@ -95,7 +95,7 @@ class Chef
       end
       
       def action_delete
-        @client.delete_repository(@new_resource.repo)
+        client.delete_repository(@new_resource.repo)
       end
 
       def hooks
@@ -103,7 +103,7 @@ class Chef
       end
 
       def client
-        return @client unless client.nil?
+        return @client unless @client.nil?
         
         conn = new_resource.connection.dup
         Octokit.configure do |c|
