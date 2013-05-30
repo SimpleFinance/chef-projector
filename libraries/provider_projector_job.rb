@@ -28,7 +28,7 @@ class Chef
         job.run_action(:create)
 
         updated = config_template.updated_by_last_action?
-        new_resource.updated_by_last_action(updated)
+        @new_resource.updated_by_last_action(updated)
       end
       
       def action_update
@@ -38,7 +38,7 @@ class Chef
         if updated
           job.run_action(:create)
         end
-        new_resource.updated_by_last_action(updated)
+        @new_resource.updated_by_last_action(updated)
       end
 
       def action_delete
@@ -48,7 +48,7 @@ class Chef
         if updated
           job.run_action(:delete)
         end
-        new_resource.updated_by_last_action(updated)
+        @new_resource.updated_by_last_action(updated)
       end
 
       def config_dir_name
@@ -84,6 +84,7 @@ class Chef
                       :description => @description,
                       :target => @target,
                       :repository => @repository,
+                      :queue => @queue
                     })
         @config_template.variables(variables)
         @config_template.owner(new_resource.owner)
