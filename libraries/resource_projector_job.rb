@@ -19,7 +19,6 @@ class Chef
         @owner = defaults['owner'] || 'projector'
         @group = defaults['group'] || 'projector'
         @template = defaults['template'] || 'config.xml.erb'
-        @branch = defaults['branch'] || 'master'
         @variables = Hash.new
         @description = ''
         @cookbook = nil
@@ -27,8 +26,7 @@ class Chef
         @repository = nil
 
         # XXX
-        @sqs_name = defaults['sqs']['name']
-        @sqs_user = defaults['sqs']['user']
+        @queue = defaults['queue'] || {}
 
         @job_name = "#{name}-#{@target}"
       end
@@ -77,8 +75,8 @@ class Chef
         set_or_return(:repository, arg, :kind_of => [String])
       end
 
-      def branch(arg=nil)
-        set_or_return(:branch, arg, :kind_of => [String])
+      def queue(arg=nil)
+        set_or_return(:queue, arg, :kind_of => [Hash])
       end
 
       private
@@ -87,7 +85,7 @@ class Chef
         attrs = if run_context && run_context.node
                   run_context.node[:projector]
                 end
-        attrs || {}
+        (attrs || {})[:job]
       end
 
     end

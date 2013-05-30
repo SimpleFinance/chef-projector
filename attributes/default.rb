@@ -1,12 +1,18 @@
-default['projector']['command'] = 'make'
-default['projector']['target'] = 'build'
-default['projector']['owner'] = node['jenkins']['XXX']['owner']
-default['projector']['group'] = node['jenkins']['XXX']['group']
-default['projector']['template'] = 'config.xml.erb'
-default['projector']['branch'] = 'master'
-default['projector']['org'] = nil
 default['projector']['databag'] = 'projector'
-default['projector']['hooks'] = {}
-default['projector']['sqs']['sqs_queue_name'] = 'projector'
-default['projector']['sqs']['aws_access_key'] = nil
-default['projector']['sqs']['aws_secret_key'] = nil
+
+default['projector']['queue']['sqs_queue_name'] = 'projector'
+default['projector']['queue']['aws_access_key'] = nil
+default['projector']['queue']['aws_secret_key'] = nil
+
+default['projector']['job']['command'] = 'make'
+default['projector']['job']['target'] = 'build'
+default['projector']['job']['owner'] = node['jenkins']['XXX']['owner']
+default['projector']['job']['group'] = node['jenkins']['XXX']['group']
+default['projector']['job']['template'] = 'config.xml.erb'
+default['projector']['job']['queue'] = node['projector']['queue']
+
+default['projector']['repository']['branch'] = 'master'
+default['projector']['repository']['org'] = nil
+default['projector']['repository']['hooks'] = {}
+default['projector']['repository']['connection'] = nil
+default['projector']['repository']['queue'] = node['projector']['queue']

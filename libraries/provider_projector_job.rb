@@ -18,7 +18,7 @@ class Chef
       end
 
       def load_current_resource
-        Chef::Resource::ProjectorJob.new(@new_resource.name)
+        @current_resource = Chef::Resource::ProjectorJob.new(@new_resource.name)
         @current_resource
       end
 
@@ -84,7 +84,6 @@ class Chef
                       :description => @description,
                       :target => @target,
                       :repository => @repository,
-                      :branch => @branch
                     })
         @config_template.variables(variables)
         @config_template.owner(new_resource.owner)
