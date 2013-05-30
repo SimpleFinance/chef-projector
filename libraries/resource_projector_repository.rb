@@ -16,9 +16,7 @@ class Chef
         @action = :create
 
         @org = defaults['org']
-        @user = nil
-        @owner = @user || @org
-        @repo = "#{owner}/#{name}"
+        @repo = "#{org}/#{name}"
         @description = ''
         @connection = defaults['connection'] || {}
         # XXX
@@ -33,14 +31,6 @@ class Chef
 
       def org(arg=nil)
         set_or_return(:org, arg, :kind_of => [String])
-      end
-
-      def user(arg=nil)
-        set_or_return(:user, arg, :kind_of => [String])
-      end
-
-      def owner(arg=nil)
-        set_or_return(:owner, arg, :kind_of => [String])
       end
 
       def description(arg=nil)

@@ -19,6 +19,7 @@ class Chef
         @current_resource.exists(repo ? true : false)
         if repo
           @current_resource.repo(repo.slug)
+          @current_resource.org(repo.username)
           @current_resource.description(repo.description)
           hooks = {}
           @client.hooks.each do |hook|
@@ -37,7 +38,7 @@ class Chef
                                     :description => @new_resource.description
                                     )
 
-          @new_resource.hooks.each_pair do |service, config|
+          hooks.each_pair do |service, config|
             @client.create_hook(@new_resource.repo, service, config)
           end
         end
@@ -69,7 +70,7 @@ class Chef
         # Use new_resource.repo from here on out in case the name changed.
         updated_hooks = []
         @current_resource.hooks.each_pair do |service, hook|
-          config = @new_resource.hooks[service]
+          config = hooks[service]
           if config.nil?
             @client.remove_hook(@new_resource.repo, hook['id'])
             updated_hooks.push(service)
@@ -82,7 +83,7 @@ class Chef
           end
         end
         
-        @new_resource.hooks.each_pair do |service, config|
+        hooks.each_pair do |service, config|
           next if updated_hooks.include?(service)
           @client.create_hook(@new_resource.repo, service, config)
           updated_hooks.push(service)
@@ -95,6 +96,10 @@ class Chef
       
       def action_delete
         @client.delete_repository(@new_resource.repo)
+      end
+
+      def hooks
+        @new_resource.hooks.merge({'sqs'=>@new_resource.queue})
       end
 
       def client
