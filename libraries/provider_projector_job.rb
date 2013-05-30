@@ -79,13 +79,13 @@ class Chef
         @config_template.cookbook(new_resource.cookbook)
         @config_template.source(new_resource.template)
 
-        variables = new_resource.variables.merge({
+        variables = {
                       :command => @command,
                       :description => @description,
                       :target => @target,
                       :repository => @repository,
                       :queue => @queue
-                    })
+                    }.merge(new_resource.variables)
         @config_template.variables(variables)
         @config_template.owner(new_resource.owner)
         @config_template.group(new_resource.group)
