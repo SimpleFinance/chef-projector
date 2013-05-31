@@ -2,7 +2,7 @@ require 'chef/provider'
 
 class Chef
   class Provider
-    class ProjectorRepository < Chef:: Provider
+    class ProjectorRepository < Chef::Provider
 
       def initialize(*args)
         super
