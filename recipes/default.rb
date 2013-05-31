@@ -23,7 +23,7 @@ data_bag(node['projector']['databag']).each do |item|
       queue 'XXX'
       variables(
         :index => i,
-        :targets = targets
+        :targets => targets
       )
     end
   end

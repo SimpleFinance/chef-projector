@@ -75,7 +75,7 @@ class Chef
             client.remove_hook(@new_resource.repo, hook['id'])
             updated_hooks.push(service)
           else
-            diff = config.select{|k,v| (v, nil).include?(hook[k])}
+            diff = config.select{|k,v| [v, nil].include?(hook[k])}
             if !diff.empty?
               client.edit_hook(@new_resource.repo, id, service, config)
               updated_hooks.push(service)
@@ -111,7 +111,7 @@ class Chef
           c.web_endpoint = conn.delete('web_endpoint') || 'https://github.com/'
         end
 
-        @client = Octokit::Client.new(**conn)
+        @client = Octokit::Client.new(conn)
       end
 
     end
