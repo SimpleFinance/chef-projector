@@ -54,6 +54,10 @@ class Chef
         set_or_return(:exists, arg, :kind_of => [Boolean])
       end
 
+      def url(arg=nil)
+        set_or_return(:url, arg, :kind_of => [String])
+      end
+
       private
 
       def attrs_from_node(run_context)

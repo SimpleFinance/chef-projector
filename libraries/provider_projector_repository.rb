@@ -21,6 +21,7 @@ class Chef
           @current_resource.repo(repo.slug)
           @current_resource.org(repo.username)
           @current_resource.description(repo.description)
+          @current_resource.url(repo.url)
           hooks = {}
           client.hooks.each do |hook|
             hooks[hook.delete('name')] = hook
@@ -101,6 +102,10 @@ class Chef
         @new_resource.hooks.merge({'sqs'=>@new_resource.queue})
       end
 
+      def url
+        client.repository(@new_resource.repo).url
+      end
+      
       def client
         return @client unless @client.nil?
         
