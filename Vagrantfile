@@ -18,5 +18,15 @@ Vagrant.configure('2') do |config|
       'recipe[jenkins::server]',
       'recipe[projector::default]'
     ]
+    chef.json = {
+      "projector" => {
+        "repository" => {
+          "connection" => {
+            "login" => ENV['GITHUB_LOGIN'],
+            "oauth_token" => ENV['GITHUB_OAUTH_TOKEN']
+          }
+        }
+      }
+    }
   end
 end
