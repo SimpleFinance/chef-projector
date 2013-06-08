@@ -14,6 +14,7 @@ class Chef
         @resource_name = :projector_repository
         @provider = Chef::Provider::ProjectorRepository
         @action = :create
+        @allowed_actions = [:create, :update, :delete]
 
         @org = defaults['org']
         @repo = "#{org}/#{name}"

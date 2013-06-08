@@ -13,6 +13,7 @@ class Chef
         @resource_name = :projector_job
         @provider = Chef::Provider::ProjectorJob
         @action = :create
+        @allowed_actions = [:create, :update, :delete]
         
         @make = defaults['make'] || 'make'
         @target = defaults['target'] || 'build'
