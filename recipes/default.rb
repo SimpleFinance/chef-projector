@@ -4,23 +4,25 @@ end
 
 data_bag(node['projector']['databag']).each do |item|
 
-  repo = projector_repository item['id'] do
+  project = Projector::Project.new(item)
+
+  repo = projector_repository project.id do
     action :create
-    org item['org']
-    description item['description']
+    org project.org
+    description project.description
     # XXX: irc, etc
     # hooks
   end
 
-  targets = item['targets'].len
-  item['targets'].each_with_index do |target, i|
-    job_name = "#{item['id']}-#{target}"
+  targets = project.targets.length
+  project.targets.each_with_index do |target, i|
+    job_name = "#{project.id}-#{target}"
     projector_job job_name do
-      make item['make']
+      make project.make
       target target
-      description item['description']
-      repository repo
-      queue 'XXX'
+      description project.description
+      repository repo.url
+      queue {}
       variables(
         :index => i,
         :targets => targets
