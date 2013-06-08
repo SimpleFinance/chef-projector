@@ -6,7 +6,7 @@ class Chef
 
       def initialize(*args)
         super
-        @command = nil
+        @make = nil
         @config_dir = nil
         @config_template = nil
         @job = nil
@@ -80,7 +80,7 @@ class Chef
         @config_template.source(new_resource.template)
 
         variables = {
-                      :command => @command,
+                      :make => @make,
                       :description => @description,
                       :target => @target,
                       :repository => @repository,

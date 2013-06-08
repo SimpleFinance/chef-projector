@@ -14,7 +14,7 @@ class Chef
         @provider = Chef::Provider::ProjectorJob
         @action = :create
         
-        @command = defaults['command'] || 'make'
+        @make = defaults['make'] || 'make'
         @target = defaults['target'] || 'build'
         @owner = defaults['owner'] || 'projector'
         @group = defaults['group'] || 'projector'
@@ -31,8 +31,8 @@ class Chef
         @job_name = "#{name}-#{@target}"
       end
 
-      def command(arg=nil)
-        set_or_return(:command, arg, :kind_of => [String])
+      def make(arg=nil)
+        set_or_return(:make, arg, :kind_of => [String])
       end
 
       def owner(arg=nil)

@@ -16,7 +16,7 @@ data_bag(node['projector']['databag']).each do |item|
   item['targets'].each_with_index do |target, i|
     job_name = "#{item['id']}-#{target}"
     projector_job job_name do
-      command item['command']
+      make item['make']
       target target
       description item['description']
       repository repo

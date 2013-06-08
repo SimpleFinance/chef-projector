@@ -4,7 +4,7 @@ default['projector']['queue']['sqs_queue_name'] = 'projector'
 default['projector']['queue']['aws_access_key'] = nil
 default['projector']['queue']['aws_secret_key'] = nil
 
-default['projector']['job']['command'] = 'make'
+default['projector']['job']['make'] = 'make'
 default['projector']['job']['target'] = 'build'
 default['projector']['job']['owner'] = node['jenkins']['server']['user']
 default['projector']['job']['group'] = node['jenkins']['server']['group']

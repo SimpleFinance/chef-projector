@@ -82,7 +82,6 @@ class Chef
             end
           end
         end
-        
         hooks.each_pair do |service, config|
           next if updated_hooks.include?(service)
           client.create_hook(@new_resource.repo, service, config)
